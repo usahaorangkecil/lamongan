@@ -5,29 +5,29 @@ import L from "leaflet";
 import Navbar from '@/components/Navbar';
 
 const categories = [
-  "Poverty and Social Assistance",
-  "Unemployment and Jobs",
-  "Public Health",
-  "Education and Schools",
-  "Disaster Risk",
-  "Infrastructure",
-  "Commodities",
-  "Regional Revenue",
-  "Citizen Reports",
-  "Youth Innovation",
+  "Kemiskinan dan Bantuan Sosial",
+  "Pengangguran dan Lapangan Kerja",
+  "Kesehatan Masyarakat",
+  "Pendidikan dan Sekolah",
+  "Risiko Bencana",
+  "Infrastruktur",
+  "Komoditas",
+  "Pendapatan Daerah",
+  "Laporan Warga",
+  "Inovasi Pemuda"
 ];
 
 const categoryColors = {
-  "Poverty and Social Assistance": "red",
-  "Unemployment and Jobs": "orange",
-  "Public Health": "green",
-  "Education and Schools": "blue",
-  "Disaster Risk": "purple",
-  "Infrastructure": "cyan",
-  "Commodities": "yellow",
-  "Regional Revenue": "pink",
-  "Citizen Reports": "brown",
-  "Youth Innovation": "lime",
+  "Kemiskinan dan Bantuan Sosial": "red",
+  "Pengangguran dan Lapangan Kerja": "orange",
+  "Kesehatan Masyarakat": "green",
+  "Pendidikan dan Sekolah": "blue",
+  "Risiko Bencana": "purple",
+   "Infrastruktur": "cyan",
+  "Komoditas: "yellow",
+  "Pendapatan Daerah": "pink",
+  "Laporan Warga": "brown",
+   "Inovasi Pemuda": "lime",
 };
 
 const generateRandomMarkers = () => {
