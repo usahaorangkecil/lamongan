@@ -24,7 +24,7 @@ const categoryColors = {
   "Pendidikan dan Sekolah": "blue",
   "Risiko Bencana": "purple",
    "Infrastruktur": "cyan",
-  "Komoditas: "yellow",
+  "Komoditas": "yellow",
   "Pendapatan Daerah": "pink",
   "Laporan Warga": "brown",
    "Inovasi Pemuda": "lime",
