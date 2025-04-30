@@ -1,0 +1,123 @@
+
+import { useState } from 'react';
+import DashboardLayout from '@/components/DashboardLayout';
+import CardStat from '@/components/CardStat';
+import DataTable from '@/components/DataTable';
+import ChartComponent from '@/components/ChartComponent';
+import { pengangguranData, pengangguranTrendData, PengangguranData } from '@/data/pengangguranData';
+import { Users, GraduationCap, Briefcase } from 'lucide-react';
+
+const AdminPengangguran = () => {
+  const [data, setData] = useState<PengangguranData[]>(pengangguranData);
+
+  // Hitung total untuk KPI cards
+  const totalPengangguran = data.reduce((sum, item) => sum + item.pengangguranTerbuka, 0);
+  const totalLulusan = data.reduce((sum, item) => sum + item.lulusanBaru, 0);
+  const totalPekerjaInformal = data.reduce((sum, item) => sum + item.pekerjaInformal, 0);
+
+  // Table columns
+  const columns = [
+    { header: 'Kecamatan', accessorKey: 'kecamatan' },
+    { header: 'Pengangguran Terbuka', accessorKey: 'pengangguranTerbuka' },
+    { header: 'Lulusan Baru', accessorKey: 'lulusanBaru' },
+    { header: 'Pekerja Informal', accessorKey: 'pekerjaInformal' }
+  ];
+
+  // Form fields for add/edit dialog
+  const formFields = [
+    { name: 'kecamatan', label: 'Kecamatan' },
+    { name: 'pengangguranTerbuka', label: 'Pengangguran Terbuka', type: 'number' },
+    { name: 'lulusanBaru', label: 'Lulusan Baru', type: 'number' },
+    { name: 'pekerjaInformal', label: 'Pekerja Informal', type: 'number' }
+  ];
+
+  // CRUD operations
+  const handleCreate = (newData: PengangguranData) => {
+    setData([...data, newData]);
+  };
+
+  const handleUpdate = (id: string, updatedData: PengangguranData) => {
+    setData(data.map(item => item.id === id ? { ...item, ...updatedData } : item));
+  };
+
+  const handleDelete = (id: string) => {
+    setData(data.filter(item => item.id !== id));
+  };
+
+  return (
+    <DashboardLayout title="Statistik Pengangguran Kabupaten Lamongan" activeLink="pengangguran">
+      <div className="space-y-6">
+        {/* KPI Cards */}
+        <div className="grid gap-4 md:grid-cols-3">
+          <CardStat 
+            title="Pengangguran Terbuka di Lamongan" 
+            value={`${totalPengangguran.toLocaleString()} Orang`}
+            icon={<Users />} 
+            trend="down" 
+            trendValue="2.3% dari bulan lalu" 
+          />
+          <CardStat 
+            title="Lulusan Baru Belum Kerja di Lamongan" 
+            value={`${totalLulusan.toLocaleString()} Orang`}
+            icon={<GraduationCap />} 
+            trend="up" 
+            trendValue="1.5% dari bulan lalu" 
+          />
+          <CardStat 
+            title="Pekerja Informal di Lamongan" 
+            value={`${totalPekerjaInformal.toLocaleString()} Orang`}
+            icon={<Briefcase />} 
+            trend="stable" 
+            trendValue="0.3% dari bulan lalu" 
+          />
+        </div>
+
+        {/* Admin Actions Panel */}
+        <div className="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+          <h3 className="text-md font-medium mb-2">Panel Administrator</h3>
+          <div className="text-sm text-slate-300 mb-3">
+            Sebagai administrator, Anda memiliki akses ke seluruh data pengangguran di Kabupaten Lamongan.
+          </div>
+          <div className="flex space-x-2 text-xs">
+            <button className="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded">
+              Export Data (Excel)
+            </button>
+            <button className="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded">
+              Generate Laporan
+            </button>
+            <button className="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded">
+              Sinkronisasi Data
+            </button>
+          </div>
+        </div>
+
+        {/* Chart: Trend 2 Tahun Terakhir */}
+        <ChartComponent 
+          title="Tren Pengangguran Kabupaten Lamongan (2 Tahun Terakhir)"
+          type="line"
+          data={pengangguranTrendData}
+          xKey="bulan"
+          yKeys={[
+            { key: 'pengangguranTerbuka', name: 'Pengangguran Terbuka', color: '#f44336' },
+            { key: 'lulusanBaru', name: 'Lulusan Baru', color: '#2196f3' },
+            { key: 'pekerjaInformal', name: 'Pekerja Informal', color: '#ff9800' }
+          ]}
+          height={300}
+        />
+
+        {/* Data Table */}
+        <DataTable
+          title="Data Pengangguran per Kecamatan"
+          data={data}
+          columns={columns}
+          formFields={formFields}
+          onCreate={handleCreate}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
+      </div>
+    </DashboardLayout>
+  );
+};
+
+export default AdminPengangguran;
